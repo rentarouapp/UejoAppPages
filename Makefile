@@ -19,3 +19,10 @@ run:
 .PHONY: generate
 generate:
 	${PUBLISH_CLI_PATH} generate
+
+deploy:
+	@echo "🔧 サイトをビルド中..."
+	${PUBLISH_CLI_PATH} generate
+	@echo "🚀 サイトをアップロード中..."
+	rsync -avz Output/ uejovapor:/var/www/uejoapppages/
+	@echo "✅ デプロイ完了！"
