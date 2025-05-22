@@ -22,4 +22,15 @@ struct UejoAppPages: Website {
 }
 
 // This will generate your website using the built-in Foundation theme:
-try UejoAppPages().publish(withTheme: .foundation)
+
+// デフォルトのテーマはこちら
+//try UejoAppPages().publish(withTheme: .foundation)
+
+// オリジナルテーマはこちら
+try UejoAppPages().publish(using: [
+    .addMarkdownFiles(), // Markdown 記事を読み込む
+    .copyResources(), // CSS などのリソースをコピーする
+    .generateHTML(withTheme: .custom), // 🔥 カスタム HTMLFactory を使う
+    .generateRSSFeed(including: [.posts]), // RSSフィードを作る（任意）
+    .generateSiteMap() // サイトマップを作る（任意）
+])
