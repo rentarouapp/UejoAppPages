@@ -16,14 +16,32 @@ struct CustomHTMLFactory<Site: Website>: HTMLFactory {
         HTML(
             .head(for: index, on: context.site),
             .body(
+                .div(
+                    .class("hero"),
+                    .h1(.text(context.site.name)),
+                    .p(.text(context.site.description))
+                ),
                 .h1("ようこそ \(context.site.name) へ！"),
                 .p("これはカスタムトップページです 🚀"),
                 .ul(
                     .forEach(context.allItems(sortedBy: \.date, order: .descending)) { item in
                             .li(
-                                .a(
-                                    .href(item.path),
-                                    .text(item.title)
+                                .article(
+                                    .unwrap((item.metadata as? UejoAppPages.ItemMetadata)?.thumbnail) { thumb in
+                                        // 勝手にエスケープ文字とダブルクオーテーションがつけられてしまうので弾く
+                                        let disableEscapingThumbnailPath = thumb.replacingOccurrences(of: "\"", with: "")
+                                        return .img(
+                                            .src(disableEscapingThumbnailPath),
+                                            .alt("サムネイル画像")
+                                        )
+                                    },
+                                    .h2(
+                                        .a(
+                                            .href(item.path.string),
+                                            .text(item.title)
+                                        )
+                                    ),
+                                    .p(.text(item.description))
                                 )
                             )
                     }

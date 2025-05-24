@@ -10,7 +10,7 @@ struct UejoAppPages: Website {
     }
 
     struct ItemMetadata: WebsiteItemMetadata {
-        // Add any site-specific metadata that you want to use here.
+        var thumbnail: String? // 記事ごとのサムネ
     }
 
     // Update these properties to configure your website:
@@ -30,6 +30,7 @@ struct UejoAppPages: Website {
 try UejoAppPages().publish(using: [
     .addMarkdownFiles(), // Markdown 記事を読み込む
     .copyResources(), // CSS などのリソースをコピーする
+    .copyResources(at: "Resources/images/", to: "images"), // これは特定のディレクトリをOutputの特定のディレクトリにコピーしてくる
     .generateHTML(withTheme: .custom), // 🔥 カスタム HTMLFactory を使う
     .generateRSSFeed(including: [.posts]), // RSSフィードを作る（任意）
     .generateSiteMap() // サイトマップを作る（任意）
